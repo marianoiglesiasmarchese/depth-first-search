@@ -27,16 +27,7 @@ class AirKaizenServiceTest(
         val paths = airKaizenService.findPaths(origin!!, destination!!)
 
         // Assert
-        Assertions.assertEquals(10,paths.size)
+        Assertions.assertEquals(10, paths.size)
     }
-
-    // TODO list all the cities
-    @Disabled
-    @Test
-    fun `should list all the cities`(){
-
-    }
-
-
 
 }
