@@ -63,7 +63,6 @@ class RouteService {
      * - don't visit two times the same city during the trip
      * - no more than 2 layovers... level = 2
      * - find the destination
-     * - node not included as part of the list of results
      */
     private fun condition(
         node: Node,

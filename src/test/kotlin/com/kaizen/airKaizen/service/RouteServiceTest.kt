@@ -57,7 +57,59 @@ class RouteServiceTest(
         paths.forEach {
             Assertions.assertTrue(it.size <= 4)
         }
+    }
 
+    @ExperimentalStdlibApi
+    @Test
+    fun `should contain origin and destination as part of the path`(){
+        // Arrange, I'm assuming that they will exist after the search
+        val destination = graph.find { it.name == "5" }
+        val origin = graph.find { it.name == "1" }
+
+        // Act
+        val paths = routeService.findPaths(origin!!, destination!!)
+
+        // print path
+        println("number of paths: ${paths.size}")
+        paths.forEach {
+            print("path: ")
+            it.forEach { each -> print("${each.name}," ) }
+            println()
+        }
+
+        // Assert
+        paths.forEach {
+            Assertions.assertTrue(it.contains(origin))
+            Assertions.assertTrue(it.contains(destination))
+        }
+    }
+
+    @ExperimentalStdlibApi
+    @Test
+    fun `a city should not be repeated inner the same path`(){
+        // Arrange, I'm assuming that they will exist after the search
+        val destination = graph.find { it.name == "5" }
+        val origin = graph.find { it.name == "1" }
+
+        // Act
+        val paths = routeService.findPaths(origin!!, destination!!)
+
+        // print path
+        println("number of paths: ${paths.size}")
+        paths.forEach {
+            print("path: ")
+            it.forEach { each -> print("${each.name}," ) }
+            println()
+        }
+
+        // Assert
+        paths.forEach {
+            val cities = hashSetOf<String>()
+            it.forEach { node ->
+                cities.add(node.name)
+            }
+            Assertions.assertEquals(it.size, cities.size)
+        }
     }
 
 }
