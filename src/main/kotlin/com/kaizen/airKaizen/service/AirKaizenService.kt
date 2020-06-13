@@ -16,25 +16,7 @@ class AirKaizenService {
 
         path.add(origin)
         origin.edges.forEach {
-            // TODO refactor this code - boilerplate
-            if (condition(it, destination, layovers)) {
-                path.add(it)
-                dfs(it, destination, layovers + 1)
-                it.visited = false
-                path.removeLast()
-            } else {
-                if (destination.name == it.name) {
-                    // save the path
-                    paths.add(path.toList())
-                    // print path
-                    print("path: ")
-                    for (node in path) {
-                        print("${node.name}  ," )
-                    }
-                    print("${destination.name}" )
-                    println()
-                }
-            }
+            evaluate(it, destination, layovers)
         }
 
         println("number of paths: ${paths.size}")
@@ -43,27 +25,31 @@ class AirKaizenService {
     }
 
     @ExperimentalStdlibApi
-    fun dfs(node: Node, destination: Node, layovers: Int) {
+    private fun dfs(node: Node, destination: Node, layovers: Int) {
         node.visited = true
         node.edges.forEach {
-            // TODO refactor this code - boilerplate
-            if (condition(it, destination, layovers)) {
-                path.add(it)
-                dfs(it, destination, layovers + 1)
-                it.visited = false
-                path.removeLast()
-            } else {
-                if (destination.name == it.name) {
-                    // save the path
-                    paths.add(path.toList())
-                    // print path
-                    print("path: ")
-                    for (node in path) {
-                        print("${node.name}  ," )
-                    }
-                    print("${destination.name}" )
-                    println()
+            evaluate(it, destination, layovers)
+        }
+    }
+
+    @ExperimentalStdlibApi
+    private fun evaluate(current: Node, destination: Node, layovers: Int){
+        if (condition(current, destination, layovers)) {
+            path.add(current)
+            dfs(current, destination, layovers + 1)
+            current.visited = false
+            path.removeLast()
+        } else {
+            if (destination.name == current.name) {
+                // save the path
+                paths.add(path.toList())
+                // print path
+                print("path: ")
+                for (node in path) {
+                    print("${node.name}  ," )
                 }
+                print("${destination.name}" )
+                println()
             }
         }
     }
@@ -75,7 +61,7 @@ class AirKaizenService {
      * - find the destination
      * - node not included as part of the list of results
      */
-    fun condition(node: Node, destination: Node, layovers: Int): Boolean {
+    private fun condition(node: Node, destination: Node, layovers: Int): Boolean {
         return !node.visited && layovers <= 1 && destination.name != node.name && !path.contains(node)
     }
 
