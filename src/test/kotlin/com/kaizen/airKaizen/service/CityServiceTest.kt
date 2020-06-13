@@ -4,12 +4,10 @@ import com.kaizen.airKaizen.model.Node
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
 class CityServiceTest(
-    @Qualifier("graph") val graph: ArrayList<Node>,
     @Autowired val flightService: FlightService,
     @Autowired val cityService: CityService
 ) {

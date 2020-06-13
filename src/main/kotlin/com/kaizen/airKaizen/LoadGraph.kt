@@ -10,7 +10,7 @@ import java.util.*
 
 
 @Configuration
-class Load(
+class LoadGraph(
     val flightService: FlightService
 ) {
 
