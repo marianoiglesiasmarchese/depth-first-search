@@ -1,6 +1,7 @@
 package com.kaizen.airKaizen
 
 import com.kaizen.airKaizen.model.Node
+import com.kaizen.airKaizen.service.FlightService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import java.io.BufferedReader
@@ -9,7 +10,9 @@ import java.util.*
 
 
 @Configuration
-class Load() {
+class Load(
+    val flightService: FlightService
+) {
 
     companion object {
         const val COMMA_DELIMITER = ","
@@ -23,7 +26,7 @@ class Load() {
      * - AirKaizen uses the same identifier for a flight between two cities. So Chicago → Grand Rapids and Grand Rapids → Chicago both share flight id KZ01.
      */
     @Bean(name = ["graph"])
-    fun loadData(): List<Node> {
+    fun loadData(): ArrayList<Node> {
 
         val records: MutableList<List<String>> = ArrayList()
         try {
@@ -35,8 +38,7 @@ class Load() {
                 while (br.readLine().also { line = it } != null) {
                     val values = line.split(COMMA_DELIMITER).toTypedArray()
                     records.add(values.toList())
-                    println(records)
-                    process(values[0], values[1])
+                    flightService.addNewFlight(graph,values[0], values[1])
                 }
             }
         } catch (e: Exception){
@@ -44,25 +46,6 @@ class Load() {
         }
 
         return graph
-    }
-
-    private fun process(origin: String, destination: String) {
-        var originNode : Node = graph.find { it.name == origin } ?: Node(name = origin)
-        var destinationNode : Node = graph.find { it.name == destination } ?: Node(name = destination)
-        // check if one of them is new and create it
-        if (graph.none { it.name == origin }){
-            graph.add(originNode)
-        }
-        if (graph.none { it.name == destination }){
-            graph.add(destinationNode)
-        }
-        // add the relationship
-        if (originNode.edges.none { it.name == destinationNode.name }){
-            originNode.edges.add(destinationNode)
-        }
-        if (destinationNode.edges.none { it.name == originNode.name }){
-            destinationNode.edges.add(originNode)
-        }
     }
 
 }

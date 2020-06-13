@@ -11,7 +11,7 @@ import org.springframework.util.Assert
 
 @SpringBootTest
 class AirKaizenServiceTest(
-    @Qualifier("graph") val graph: List<Node>,
+    @Qualifier("graph") val graph: ArrayList<Node>,
     @Autowired val airKaizenService: AirKaizenService
 ) {
 
@@ -20,11 +20,10 @@ class AirKaizenServiceTest(
     @Test
     fun `should retrieve some paths`(){
         // Arrange
-        // define origin and destination, I assume that they will exist after the search
         val destination = graph.find { it.name == "5" }
         val origin = graph.find { it.name == "1" }
 
-        // Act
+        // Act, I'm assuming that they will exist after the search
         val paths = airKaizenService.findPaths(origin!!, destination!!)
 
         // Assert
@@ -38,11 +37,6 @@ class AirKaizenServiceTest(
 
     }
 
-    // TODO add new flights (edges)
-    @Disabled
-    @Test
-    fun `should add new flights`(){
 
-    }
 
 }
