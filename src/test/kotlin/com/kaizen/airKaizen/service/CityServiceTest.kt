@@ -13,7 +13,7 @@ class CityServiceTest(
 ) {
 
     @Test
-    fun `should retrieve all the cities`(){
+    fun`should retrieve all the cities`(){
         // Arrange
         val graph = arrayListOf<Node>()
         val cityNames = listOf("1", "2", "3", "4")
